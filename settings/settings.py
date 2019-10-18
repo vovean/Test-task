@@ -25,7 +25,7 @@ SECRET_KEY = '5d#p53!65b7!r#*@9)&-+#x(u8jy(bwghxr0q7_4xr^6)^l99&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'settings.wsgi.application'
+ASGI_APPLICATION = 'settings.routing.application'
 
 
 # Database
