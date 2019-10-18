@@ -1,7 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import filters
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
 from rest_framework import status
 
