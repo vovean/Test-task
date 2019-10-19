@@ -24,9 +24,13 @@
 2) `. venv_folder/bin/activate`
 3) `pip install -r requirements.txt`
 4) `docker run -p 6379:6379 -d redis:2.8`
-5) `python manage.py runserver`
+5) `python manage.py makemigrations`
+6) `python manage.py migrate`
+7) `python manage.py runserver`
 
 # Замечания
 Использование docker опционально, Redis можно запустить и без него.  
 Также, для ипользования всех возможностей Channels 2 стоит писать асинхронный код, но в рамках тестового задания 
-было принято решения оставить код синхронным.
+было принято решения оставить код синхронным.  
+В случае запуска Redis на адрессе отлично от 127.0.0.1:6379 нужно исправить соответствующие настройки
+в `settings.py` (строки 75, 76)

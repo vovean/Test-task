@@ -73,11 +73,12 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 ASGI_APPLICATION = 'settings.routing.application'
 
 REDIS_PORT = 6379
+REDIS_URL = '127.0.0.1'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', REDIS_PORT)],
+            'hosts': [(REDIS_URL, REDIS_PORT)],
         },
     },
 }
