@@ -20,10 +20,11 @@
  - docker 18.09.7
 
 # Запуск
-1) `python3 -m venv venv_folder`
+1) `python -m venv venv_folder`
 2) `. venv_folder/bin/activate`
 3) `pip install -r requirements.txt`
 4) `docker run -p 6379:6379 -d redis:2.8`
+5) `python manage.py runserver`
 
 # Замечания
 Использование docker опционально, Redis можно запустить и без него.  
