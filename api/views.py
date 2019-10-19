@@ -1,5 +1,6 @@
+import time
+
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
 from rest_framework import status
@@ -8,10 +9,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from api.models import Task
 from api.serializers import TaskSerializer
-from api.ajax_updater import AjaxUpdater
+from api.status_updater import StatusUpdater
 
-can_return_ajax = False
-ajax_response = None
+import settings.settings as settings
 
 
 class TaskList(ListAPIView):
@@ -37,7 +37,7 @@ def change_task_status(request, task_id):
                             status=status.HTTP_404_NOT_FOUND)
     task_to_finish.change_status()
 
-    AjaxUpdater.get_status_update(task_id)
+    StatusUpdater.get_status_update(task_id, task_to_finish.finished)
 
     return JsonResponse(data=TaskSerializer(task_to_finish).data,
                         status=status.HTTP_200_OK)
@@ -52,7 +52,7 @@ class DeleteTask(DestroyAPIView):
 
 # long polling
 def listen_to_updates(request):
-    while not AjaxUpdater.has_updates:
+    while not StatusUpdater.has_updates:
         # keeping connection open
-        ...
-    return AjaxUpdater.get_response()
+        time.sleep(settings.UPDATE_FREQUENCY)
+    return StatusUpdater.get_response()

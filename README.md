@@ -22,3 +22,7 @@ let update = await fetch(window.location.protocol + '//' + window.location.host 
 4) `python manage.py makemigrations`
 5) `python manage.py migrate`
 6) `python manage.py runserver`
+
+# Замечание
+Чтобы снизить нагрузку на сервер переменная-флаг проверяется раз в несколько секунд. 
+Количество секунд (частота обновления) устанавливается в `settings.py` в переменной `UPDATE_FREQUENCY`.
