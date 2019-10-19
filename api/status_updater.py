@@ -17,5 +17,6 @@ class StatusUpdater:
     @classmethod
     def get_response(cls):
         StatusUpdater.has_updates = False
-        # safe=False is needed to serialize a list of dictionaries
-        return JsonResponse({'event': 'status_updates', 'data': StatusUpdater.__response})
+        json_response = JsonResponse({'event': 'status_updates', 'data': StatusUpdater.__response})
+        StatusUpdater.__response = dict()
+        return json_response
