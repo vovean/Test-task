@@ -1,7 +1,3 @@
-import json
-
-from asgiref.sync import async_to_sync
-
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -12,8 +8,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from api.models import Task
 from api.serializers import TaskSerializer
+from api.ajax_updater import AjaxUpdater
 
-import channels.layers
+can_return_ajax = False
+ajax_response = None
 
 
 class TaskList(ListAPIView):
@@ -28,7 +26,6 @@ class CreateTask(CreateAPIView):
     serializer_class = TaskSerializer
 
 
-@csrf_exempt
 def change_task_status(request, task_id):
     if not request.method == 'GET':
         return JsonResponse(data={'detail': 'Method "POST" not allowed.'},
@@ -40,16 +37,8 @@ def change_task_status(request, task_id):
                             status=status.HTTP_404_NOT_FOUND)
     task_to_finish.change_status()
 
-    # Channels notifications to everyone who is in 'tasks_group' group
-    channel_layer = channels.layers.get_channel_layer()
-    message = {
-        'task_id': task_id,
-        'action': 'change_status'
-    }
-    async_to_sync(channel_layer.group_send)('tasks_group', {
-        'type': 'tasks_group_message',
-        'message': json.dumps(message)
-    })
+    AjaxUpdater.get_status_update(task_id)
+
     return JsonResponse(data=TaskSerializer(task_to_finish).data,
                         status=status.HTTP_200_OK)
 
@@ -59,3 +48,11 @@ class DeleteTask(DestroyAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
     lookup_url_kwarg = 'task_id'
+
+
+# long polling
+def listen_to_updates(request):
+    while not AjaxUpdater.has_updates:
+        # keeping connection open
+        ...
+    return AjaxUpdater.get_response()

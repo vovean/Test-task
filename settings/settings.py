@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'django_filters',
-    'channels'
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -70,18 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'settings.wsgi.application'
-ASGI_APPLICATION = 'settings.routing.application'
-
-REDIS_PORT = 6379
-REDIS_URL = '127.0.0.1'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [(REDIS_URL, REDIS_PORT)],
-        },
-    },
-}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
