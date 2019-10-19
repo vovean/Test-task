@@ -1,8 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
 class Task(models.Model):
     owner_id = models.IntegerField(null=False)
     name = models.CharField(null=False, max_length=100)
